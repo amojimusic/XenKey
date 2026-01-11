@@ -10,7 +10,7 @@ XenKey {
 		window = Window("XenKey", Rect(500, 100, 831.5, 500)).front.background_(Color(0.3, 0.27, 0.28)).alwaysOnTop_(true);
 
 		keyDownFunc = {
-			arg view, char;
+			arg view, char, mod, unicode, keycode;
 
 			if(char.asString == "z"){
 				Synth(XenKeySynth.synthName, [\freq, XenKeyTuning()[0]]);
@@ -168,6 +168,32 @@ XenKey {
 			if(char.asString == "P"){
 				Synth(XenKeySynth.synthName, [\freq, XenKeyTuning()[25] * 2]);
 			};
+
+			if(keycode == 37){
+				XenKeySynth.octave_(0.25);
+				XenKeySynth();
+			};
+
+			if(keycode == 40){
+				XenKeySynth.octave_(0.5);
+				XenKeySynth();
+			};
+
+			if(keycode == 17){
+				XenKeySynth.octave_(1);
+				XenKeySynth();
+			};
+
+			if(keycode == 38){
+				XenKeySynth.octave_(2);
+				XenKeySynth();
+			};
+
+			if(keycode == 39){
+				XenKeySynth.octave_(4);
+				XenKeySynth();
+			};
+
 		};
 
 		osc1View = View(window, Rect(10, 5, 150, 150)).background_(Color(0.1, 0.2, 0.3));
@@ -248,6 +274,10 @@ XenKey {
 			if(muteIndex == 2){
 				muteIndex = 0;
 			};
+
+
+
+
 		});
 
 
@@ -1016,13 +1046,13 @@ XenKeyTuning {
 	classvar <>di = 0.46153846153846;
 
 	*new {
-		^[tonic, tonic + di, tonic + (di * 2), tonic + (di * 3), tonic + (di * 4), tonic + (di * 5), tonic + (di * 6), tonic + (di * 7), tonic + (di * 8), tonic + (di * 9), tonic + (di * 10), tonic + (di * 11), tonic + (di * 12), tonic + (di * 13), tonic + (di * 14), tonic + (di * 15), tonic + (di * 16), tonic + (di * 17), tonic + (di * 18), tonic + (di * 19), tonic + (di * 20), tonic + (di * 21), tonic + (di * 22), tonic + (di * 23), tonic + (di * 24), tonic + (di * 25)].midicps;
+		^[tonic, tonic + di, tonic + (di * 2), tonic + (di * 3), tonic + (di * 4), tonic + (di * 5), tonic + (di * 6), tonic + (di * 7), tonic + (di * 8), tonic + (di * 9), tonic + (di * 10), tonic + (di * 11), tonic + (di * 12), tonic + (di * 13), tonic + (di * 14), tonic + (di * 15), tonic + (di * 16), tonic + (di * 17), tonic + (di * 18), tonic + (di * 19), tonic + (di * 20), tonic + (di * 21), tonic + (di * 22), tonic + (di * 23), tonic + (di * 24), tonic + (di * 25), tonic + (di * 26), tonic + (di * 27), tonic + (di * 28), tonic + (di * 29), tonic + (di * 30), tonic + (di * 31), tonic + (di * 32), tonic + (di * 33), tonic + (di * 34), tonic + (di * 35)].midicps;
 	}
 }
 
 XenKeySynth {
 
-	classvar <>synthName = \xenSynth, <>osc1R = 1.0, <>osc2R = 1.0, <>osc1Amp = 1.0, <>osc2Amp = 1.0, <>selfFM = 0.0, <>amp = 1.0, <>atk = 0.01, <>rel = 1.0, <>osc1Sel = 0, <>osc2Sel = 0, <>fil1Sel = 0, <>fil2Sel = 0, <>muteSel = 0, <>fmAmp = 0.0, <>fil1Sel = 0, <>fil2Sel = 0, <>fil1Cut = 1000, <>fil2Cut = 1000, <>fil1Res = 1.0, <>fil2Res = 1.0, <>globalAmp = 1.0, <>lfo1Freq = 0.001, <>lfo2Freq = 0.001, <>lfo3Freq = 0.001, <>lfo4Freq = 0.001, <>lfo5Freq = 0.001, <>lfo6Freq = 0.001, <>lfo1Amp = 1.0, <>lfo2Amp = 1.0, <>lfo3Amp = 1.0, <>lfo4Amp = 1.0, <>lfo5Amp = 1.0, <>lfo6Amp = 1.0, <>osc1FreqLfo1 = 0.0, <>osc1FreqLfo2 = 0.0, <>osc1FreqLfo3 = 0.0, <>osc1FreqLfo4 = 0.0, <>osc1FreqLfo5 = 0.0, <>osc1FreqLfo6 = 0.0, <>osc2FreqLfo1 = 0.0, <>osc2FreqLfo2 = 0.0, <>osc2FreqLfo3 = 0.0, <>osc2FreqLfo4 = 0.0, <>osc2FreqLfo5 = 0.0, <>osc2FreqLfo6 = 0.0, <>osc1AmpLfo1 = 0.0, <>osc1AmpLfo2 = 0.0, <>osc1AmpLfo3 = 0.0, <>osc1AmpLfo4 = 0.0, <>osc1AmpLfo5 = 0.0, <>osc1AmpLfo6 = 0.0, <>osc2AmpLfo1 = 0.0, <>osc2AmpLfo2 = 0.0, <>osc2AmpLfo3 = 0.0, <>osc2AmpLfo4 = 0.0, <>osc2AmpLfo5 = 0.0, <>osc2AmpLfo6 = 0.0, <>fil1CutLfo1 = 0.0, <>fil1CutLfo2 = 0.0, <>fil1CutLfo3 = 0.0, <>fil1CutLfo4 = 0.0, <>fil1CutLfo5 = 0.0, <>fil1CutLfo6 = 0.0, <>fil2CutLfo1 = 0.0, <>fil2CutLfo2 = 0.0, <>fil2CutLfo3 = 0.0, <>fil2CutLfo4 = 0.0, <>fil2CutLfo5 = 0.0, <>fil2CutLfo6 = 0.0, <>fil1ResLfo1 = 0.0, <>fil1ResLfo2 = 0.0, <>fil1ResLfo3 = 0.0, <>fil1ResLfo4 = 0.0, <>fil1ResLfo5 = 0.0, <>fil1ResLfo6 = 0.0, <>fil2ResLfo1 = 0.0, <>fil2ResLfo2 = 0.0, <>fil2ResLfo3 = 0.0, <>fil2ResLfo4 = 0.0, <>fil2ResLfo5 = 0.0, <>fil2ResLfo6 = 0.0, <>fmLfo1 = 0.0, <>fmLfo2 = 0.0, <>fmLfo3 = 0.0, <>fmLfo4 = 0.0, <>fmLfo5 = 0.0, <>fmLfo6 = 0.0, <>selfFMLfo1 = 0.0, <>selfFMLfo2 = 0.0, <>selfFMLfo3 = 0.0, <>selfFMLfo4 = 0.0, <>selfFMLfo5 = 0.0, <>selfFMLfo6 = 0.0, <>lfo1Sel = 0, <>lfo2Sel = 0, <>lfo3Sel = 0, <>lfo4Sel = 0, <>lfo5Sel = 0, <>lfo6Sel = 0;
+	classvar <>synthName = \xenSynth, <>osc1R = 1.0, <>osc2R = 1.0, <>osc1Amp = 1.0, <>osc2Amp = 1.0, <>selfFM = 0.0, <>amp = 1.0, <>atk = 0.01, <>rel = 1.0, <>osc1Sel = 0, <>osc2Sel = 0, <>fil1Sel = 0, <>fil2Sel = 0, <>muteSel = 0, <>fmAmp = 0.0, <>fil1Sel = 0, <>fil2Sel = 0, <>fil1Cut = 1000, <>fil2Cut = 1000, <>fil1Res = 1.0, <>fil2Res = 1.0, <>globalAmp = 1.0, <>lfo1Freq = 0.001, <>lfo2Freq = 0.001, <>lfo3Freq = 0.001, <>lfo4Freq = 0.001, <>lfo5Freq = 0.001, <>lfo6Freq = 0.001, <>lfo1Amp = 1.0, <>lfo2Amp = 1.0, <>lfo3Amp = 1.0, <>lfo4Amp = 1.0, <>lfo5Amp = 1.0, <>lfo6Amp = 1.0, <>osc1FreqLfo1 = 0.0, <>osc1FreqLfo2 = 0.0, <>osc1FreqLfo3 = 0.0, <>osc1FreqLfo4 = 0.0, <>osc1FreqLfo5 = 0.0, <>osc1FreqLfo6 = 0.0, <>osc2FreqLfo1 = 0.0, <>osc2FreqLfo2 = 0.0, <>osc2FreqLfo3 = 0.0, <>osc2FreqLfo4 = 0.0, <>osc2FreqLfo5 = 0.0, <>osc2FreqLfo6 = 0.0, <>osc1AmpLfo1 = 0.0, <>osc1AmpLfo2 = 0.0, <>osc1AmpLfo3 = 0.0, <>osc1AmpLfo4 = 0.0, <>osc1AmpLfo5 = 0.0, <>osc1AmpLfo6 = 0.0, <>osc2AmpLfo1 = 0.0, <>osc2AmpLfo2 = 0.0, <>osc2AmpLfo3 = 0.0, <>osc2AmpLfo4 = 0.0, <>osc2AmpLfo5 = 0.0, <>osc2AmpLfo6 = 0.0, <>fil1CutLfo1 = 0.0, <>fil1CutLfo2 = 0.0, <>fil1CutLfo3 = 0.0, <>fil1CutLfo4 = 0.0, <>fil1CutLfo5 = 0.0, <>fil1CutLfo6 = 0.0, <>fil2CutLfo1 = 0.0, <>fil2CutLfo2 = 0.0, <>fil2CutLfo3 = 0.0, <>fil2CutLfo4 = 0.0, <>fil2CutLfo5 = 0.0, <>fil2CutLfo6 = 0.0, <>fil1ResLfo1 = 0.0, <>fil1ResLfo2 = 0.0, <>fil1ResLfo3 = 0.0, <>fil1ResLfo4 = 0.0, <>fil1ResLfo5 = 0.0, <>fil1ResLfo6 = 0.0, <>fil2ResLfo1 = 0.0, <>fil2ResLfo2 = 0.0, <>fil2ResLfo3 = 0.0, <>fil2ResLfo4 = 0.0, <>fil2ResLfo5 = 0.0, <>fil2ResLfo6 = 0.0, <>fmLfo1 = 0.0, <>fmLfo2 = 0.0, <>fmLfo3 = 0.0, <>fmLfo4 = 0.0, <>fmLfo5 = 0.0, <>fmLfo6 = 0.0, <>selfFMLfo1 = 0.0, <>selfFMLfo2 = 0.0, <>selfFMLfo3 = 0.0, <>selfFMLfo4 = 0.0, <>selfFMLfo5 = 0.0, <>selfFMLfo6 = 0.0, <>lfo1Sel = 0, <>lfo2Sel = 0, <>lfo3Sel = 0, <>lfo4Sel = 0, <>lfo5Sel = 0, <>lfo6Sel = 0, <>octave = 1, <>pan = 0.0;
 
 
 	*new {
@@ -1083,23 +1113,23 @@ XenKeySynth {
 
 
 			osc1 = Select.ar(osc1Sel, [
-				SinOsc.ar(\freq.kr(440) * osc1R + (self * selfFM) + (lfo1 * osc1FreqLfo1) + (lfo2 * osc1FreqLfo2) + (lfo3 * osc1FreqLfo3) + (lfo4 * osc1FreqLfo4) + (lfo5 * osc1FreqLfo5) + (lfo6 * osc1FreqLfo6), 0, 1 + (lfo1 * osc1AmpLfo1) + (lfo2 * osc1AmpLfo2) + (lfo3 * osc1AmpLfo3) + (lfo4 * osc1AmpLfo4) + (lfo5 * osc1AmpLfo5) + (lfo6 * osc1AmpLfo6)) ,
-				LFTri.ar(\freq.kr * osc1R + (self * selfFM) + (lfo1 * osc1FreqLfo1) + (lfo2 * osc1FreqLfo2) + (lfo3 * osc1FreqLfo3) + (lfo4 * osc1FreqLfo4) + (lfo5 * osc1FreqLfo5) + (lfo6 * osc1FreqLfo6), 0, 1 + (lfo1 * osc1AmpLfo1) + (lfo2 * osc1AmpLfo2) + (lfo3 * osc1AmpLfo3) + (lfo4 * osc1AmpLfo4) + (lfo5 * osc1AmpLfo5) + (lfo6 * osc1AmpLfo6)),
-				Saw.ar(\freq.kr * osc1R + (self * selfFM) + (lfo1 * osc1FreqLfo1) + (lfo2 * osc1FreqLfo2) + (lfo3 * osc1FreqLfo3) + (lfo4 * osc1FreqLfo4) + (lfo5 * osc1FreqLfo5) + (lfo6 * osc1FreqLfo6), 1 + (lfo1 * osc1AmpLfo1) + (lfo2 * osc1AmpLfo2) + (lfo3 * osc1AmpLfo3) + (lfo4 * osc1AmpLfo4) + (lfo5 * osc1AmpLfo5) + (lfo6 * osc1AmpLfo6)),
-				Pulse.ar(\freq.kr * osc1R + (self * selfFM) + (lfo1 * osc1FreqLfo1) + (lfo2 * osc1FreqLfo2) + (lfo3 * osc1FreqLfo3) + (lfo4 * osc1FreqLfo4) + (lfo5 * osc1FreqLfo5) + (lfo6 * osc1FreqLfo6), 0.5, 1 + (lfo1 * osc1AmpLfo1) + (lfo2 * osc1AmpLfo2) + (lfo3 * osc1AmpLfo3) + (lfo4 * osc1AmpLfo4) + (lfo5 * osc1AmpLfo5) + (lfo6 * osc1AmpLfo6))]) * osc1Amp * env;
+				SinOsc.ar(\freq.kr(440) * octave * osc1R + (self * selfFM) + (lfo1 * osc1FreqLfo1) + (lfo2 * osc1FreqLfo2) + (lfo3 * osc1FreqLfo3) + (lfo4 * osc1FreqLfo4) + (lfo5 * osc1FreqLfo5) + (lfo6 * osc1FreqLfo6), 0, 1 + (lfo1 * osc1AmpLfo1) + (lfo2 * osc1AmpLfo2) + (lfo3 * osc1AmpLfo3) + (lfo4 * osc1AmpLfo4) + (lfo5 * osc1AmpLfo5) + (lfo6 * osc1AmpLfo6)) ,
+				LFTri.ar(\freq.kr * octave * osc1R + (self * selfFM) + (lfo1 * osc1FreqLfo1) + (lfo2 * osc1FreqLfo2) + (lfo3 * osc1FreqLfo3) + (lfo4 * osc1FreqLfo4) + (lfo5 * osc1FreqLfo5) + (lfo6 * osc1FreqLfo6), 0, 1 + (lfo1 * osc1AmpLfo1) + (lfo2 * osc1AmpLfo2) + (lfo3 * osc1AmpLfo3) + (lfo4 * osc1AmpLfo4) + (lfo5 * osc1AmpLfo5) + (lfo6 * osc1AmpLfo6)),
+				Saw.ar(\freq.kr * octave * osc1R + (self * selfFM) + (lfo1 * osc1FreqLfo1) + (lfo2 * osc1FreqLfo2) + (lfo3 * osc1FreqLfo3) + (lfo4 * osc1FreqLfo4) + (lfo5 * osc1FreqLfo5) + (lfo6 * osc1FreqLfo6), 1 + (lfo1 * osc1AmpLfo1) + (lfo2 * osc1AmpLfo2) + (lfo3 * osc1AmpLfo3) + (lfo4 * osc1AmpLfo4) + (lfo5 * osc1AmpLfo5) + (lfo6 * osc1AmpLfo6)),
+				Pulse.ar(\freq.kr * octave * osc1R + (self * selfFM) + (lfo1 * osc1FreqLfo1) + (lfo2 * osc1FreqLfo2) + (lfo3 * osc1FreqLfo3) + (lfo4 * osc1FreqLfo4) + (lfo5 * osc1FreqLfo5) + (lfo6 * osc1FreqLfo6), 0.5, 1 + (lfo1 * osc1AmpLfo1) + (lfo2 * osc1AmpLfo2) + (lfo3 * osc1AmpLfo3) + (lfo4 * osc1AmpLfo4) + (lfo5 * osc1AmpLfo5) + (lfo6 * osc1AmpLfo6))]) * osc1Amp * env;
 
 
 			osc2 = Select.ar(osc2Sel, [
-				SinOsc.ar(\freq.kr(440) * osc2R + (self * selfFM) +
+				SinOsc.ar(\freq.kr(440) * octave * osc2R + (self * selfFM) +
 					(Clip.kr(osc1 * (fmAmp + (lfo1 * fmLfo1) + (lfo2 * fmLfo2) + (lfo3 * fmLfo3) + (lfo4 * fmLfo4) + (lfo5 * fmLfo5) + (lfo6 * fmLfo6)), 0.001, 15000.0)) +
 					(lfo1 * osc2FreqLfo1) + (lfo2 * osc2FreqLfo2) + (lfo3 * osc2FreqLfo3) + (lfo4 * osc2FreqLfo4) + (lfo5 * osc2FreqLfo5) + (lfo6 * osc2FreqLfo6), 0, 1 + (lfo1 * osc2AmpLfo1) + (lfo2 * osc2AmpLfo2) + (lfo3 * osc2AmpLfo3) + (lfo4 * osc2AmpLfo4) + (lfo5 * osc2AmpLfo5) + (lfo6 * osc2AmpLfo6)),
-				LFTri.ar(\freq.kr * osc2R + (self * selfFM) +
+				LFTri.ar(\freq.kr * octave * osc2R + (self * selfFM) +
 					(Clip.kr(osc1 * (fmAmp + (lfo1 * fmLfo1) + (lfo2 * fmLfo2) + (lfo3 * fmLfo3) + (lfo4 * fmLfo4) + (lfo5 * fmLfo5) + (lfo6 * fmLfo6)), 0.001, 15000.0))
 					+ (lfo1 * osc2FreqLfo1) + (lfo2 * osc2FreqLfo2) + (lfo3 * osc2FreqLfo3) + (lfo4 * osc2FreqLfo4) + (lfo5 * osc2FreqLfo5) + (lfo6 * osc2FreqLfo6), 0, 1 + (lfo1 * osc2AmpLfo1) + (lfo2 * osc2AmpLfo2) + (lfo3 * osc2AmpLfo3) + (lfo4 * osc2AmpLfo4) + (lfo5 * osc2AmpLfo5) + (lfo6 * osc2AmpLfo6)),
-				Saw.ar(\freq.kr * osc2R + (self * selfFM) +
+				Saw.ar(\freq.kr * octave * osc2R + (self * selfFM) +
 					(Clip.kr(osc1 * (fmAmp + (lfo1 * fmLfo1) + (lfo2 * fmLfo2) + (lfo3 * fmLfo3) + (lfo4 * fmLfo4) + (lfo5 * fmLfo5) + (lfo6 * fmLfo6)), 0.001, 15000.0))
 					+ (lfo1 * osc2FreqLfo1) + (lfo2 * osc2FreqLfo2) + (lfo3 * osc2FreqLfo3) + (lfo4 * osc2FreqLfo4) + (lfo5 * osc2FreqLfo5) + (lfo6 * osc2FreqLfo6), 1 + (lfo1 * osc2AmpLfo1) + (lfo2 * osc2AmpLfo2) + (lfo3 * osc2AmpLfo3) + (lfo4 * osc2AmpLfo4) + (lfo5 * osc2AmpLfo5) + (lfo6 * osc2AmpLfo6)),
-				Pulse.ar(\freq.kr * osc2R + (self * selfFM) +
+				Pulse.ar(\freq.kr * octave * osc2R + (self * selfFM) +
 					(Clip.kr(osc1 * (fmAmp + (lfo1 * fmLfo1) + (lfo2 * fmLfo2) + (lfo3 * fmLfo3) + (lfo4 * fmLfo4) + (lfo5 * fmLfo5) + (lfo6 * fmLfo6)), 0.001, 15000.0))
 					+ (lfo1 * osc2FreqLfo1) + (lfo2 * osc2FreqLfo2) + (lfo3 * osc2FreqLfo3) + (lfo4 * osc2FreqLfo4) + (lfo5 * osc2FreqLfo5) + (lfo6 * osc2FreqLfo6), 0.5, 1 + (lfo1 * osc2AmpLfo1) + (lfo2 * osc2AmpLfo2) + (lfo3 * osc2AmpLfo3) + (lfo4 * osc2AmpLfo4) + (lfo5 * osc2AmpLfo5) + (lfo6 * osc2AmpLfo6))]) * osc2Amp * env;
 
@@ -1126,7 +1156,10 @@ XenKeySynth {
 			LocalOut.ar(osc1);
 
 			osc1 = osc1 * globalAmp;
-			osc1 = Pan2.ar(osc1, \pan.kr(0));
+
+			osc1 = osc1 * 0.5;
+			osc1 = Pan2.ar(osc1, pan);
+			osc1 = Clip.ar(osc1, -0.9, 0.9);
 			Out.ar(\out.kr(0), osc1);
 
 		}).add;
